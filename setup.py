@@ -45,7 +45,7 @@ setup(
     platforms=['any'],
     packages=find_packages(),
     include_package_data=True,
-    install_requires=['scrapy>=1.3.1', 'BeautifulSoup4>=4.5.3'],
+    install_requires=['scrapy>=1.3.2', 'BeautifulSoup4>=4.5.3', 'pyasn1'],
     tests_require=['pytest'],
 
     # empty array for now
