@@ -4,8 +4,7 @@ python:
   - "3.5-dev"
   - "nightly"
 install:
-  - pip install -U pytest
-  - pip install -U pytest-runner
+  - pip install -r dev-requirements.txt
   - pip install -U coverage
   - pip install -U coveralls
 script:
