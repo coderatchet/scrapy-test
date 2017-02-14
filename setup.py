@@ -15,6 +15,10 @@
 from setuptools import setup, find_packages
 from scrapytest import __version__
 
+import sys
+needs_pytest = {'pytest', 'test', 'ptr'}.intersection(sys.argv)
+pytest_runner = ['pytest-runner'] if needs_pytest else []
+
 setup(
     name="scrapytest",
     version=__version__,
@@ -41,7 +45,9 @@ setup(
     platforms=['any'],
     packages=find_packages(),
     include_package_data=True,
-    install_requires=['scrapy==1.3.1'],
+    install_requires=['scrapy>=1.3.1', 'BeautifulSoup4>=4.5.3'],
     tests_require=['pytest'],
-    setup_requires=['pytest-runner']
+
+    # empty array for now
+    setup_requires=[] + pytest_runner
 )
