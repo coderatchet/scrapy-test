@@ -1,0 +1,3 @@
+{
+  "mongo_connection_string": "mongodb://mongodb0.example.net:27017"
+}
