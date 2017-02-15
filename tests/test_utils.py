@@ -1,3 +1,16 @@
+# -*- coding: utf-8 -*-
+"""
+    test_utils.py
+
+    Copyright 2017 CodeRatchet
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+"""
+
 import pytest
 from copy import copy
 
