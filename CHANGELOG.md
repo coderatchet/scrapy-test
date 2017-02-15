@@ -9,5 +9,7 @@
 - Feature: Added ability to read config from json file.
 - Feature: Added ability to add environment specific configuration.
 - Feature: Article stores DateTime
+- Feature: Added spider to crawl news website theguardian.com.au
+- Feature: Documents are stored in mongodb for later retrieval 
 - Fix: Cleaned test data
 - Fix: Changed db orm to use mongoengine

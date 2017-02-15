@@ -16,7 +16,7 @@ from pymongo.errors import BulkWriteError
 
 from .types import Article
 from .config import config
-connection = connect(config['db_name'], host=config['mongo_connection_string'])
+connection = connect(host="{}/{}".format(config['mongo_connection_string'], config['db_name']))
 
 # load test data if applicable
 if config.get('load_test_data', False):

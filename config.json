@@ -9,6 +9,11 @@
     "collection_paths": ["/news", "/sport", "/opinion", "/community", "/life-style", "/entertainment"],
     "article_list_item_link_selector": ".article-listings-default article header a::attr(href)",
     "next_page_selector": ".pager .next a::attr(href)",
-    "max_depth": 10
+    "title_selector": ".news-article-panel .news-article-title *[itemprop=name]::text",
+    "author_selector": ".news-article-panel .news-article-byline .story-header__author-name",
+    "date_time_selector": ".news-article-panel .news-article-byline time::attr(datetime)",
+    "date_time_format": "%Y-%m-%dT%H:%M:%S%z",
+    "content_selector": ".news-article-body > p:not(.summary)::text",
+    "max_depth": 1
   }
 }
