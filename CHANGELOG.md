@@ -13,3 +13,6 @@
 - Feature: Documents are stored in mongodb for later retrieval 
 - Fix: Cleaned test data
 - Fix: Changed db orm to use mongoengine
+
+## 0.2.1
+- Fix: removed beautifulsoup4 (not being used, so only patch)
