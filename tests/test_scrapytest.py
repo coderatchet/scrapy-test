@@ -11,7 +11,6 @@
     http://www.apache.org/licenses/LICENSE-2.0
 """
 
-import pytest
 from scrapytest import __version_info__, __version__
 
 

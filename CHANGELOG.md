@@ -7,3 +7,4 @@
 ## 0.2.1
 
 - Feature: Added ability to read config from json file.
+- Feature: Added ability to add environment specific configuration.
