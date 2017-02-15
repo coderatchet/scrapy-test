@@ -14,7 +14,7 @@
 from mongoengine import connect
 from pymongo.errors import BulkWriteError
 
-from scrapytest.types import Article
+from .types import Article
 from .config import config
 connection = connect(config['db_name'], host=config['mongo_connection_string'])
 
@@ -32,6 +32,7 @@ if config.get('load_test_data', False):
         except BulkWriteError as e:
             print(e.details)
         finally:
+            # iterate through articles and persist them.
             for article in data:
                 new_article = Article(title=article['title'],
                         author=article['author'],
