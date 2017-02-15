@@ -3,6 +3,9 @@ python:
   - "3.5"
   - "3.5-dev"
   - "nightly"
+services: mongodb
+env:
+  - ENV=dev
 install:
   - pip install -r requirements.txt
   - pip install -U pytest

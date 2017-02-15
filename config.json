@@ -1,4 +1,6 @@
 {
   "mongo_connection_string": "mongodb://localhost:27017",
-  "db_name": "scrapytest"
+  "db_name": "scrapytest",
+  "load_test_data": false,
+  "test_data_file": "tests/test_data.json"
 }
