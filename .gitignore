@@ -89,3 +89,6 @@ ENV/
 .ropeproject
 
 .idea/
+
+# should ignore local configuration files for security of personal data
+*.local.json
