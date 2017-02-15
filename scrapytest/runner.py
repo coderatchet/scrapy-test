@@ -16,7 +16,7 @@ from scrapy.crawler import CrawlerProcess
 
 def main():
     from scrapy.settings import Settings
-    from scrapytest.guardian_news_spider import GuardianNewsSpider
+    from scrapytest.spiders import GuardianNewsSpider
 
     from scrapytest.config import config
 
