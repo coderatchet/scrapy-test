@@ -10,7 +10,6 @@
 
     http://www.apache.org/licenses/LICENSE-2.0
 """
-import logging
 
 from scrapy.crawler import CrawlerProcess
 
@@ -21,10 +20,6 @@ def main():
 
     from scrapytest.config import config
 
-    def _spider_closing(spider):
-        """Activates on spider closed signal"""
-        logging.log("Closing reactor", level=logging.INFO)
-
     settings = Settings()
     settings.set("USER_AGENT", config['crawler_user_agent'])
     crawler = CrawlerProcess(settings=settings)
@@ -32,6 +27,7 @@ def main():
     crawler.crawl(GuardianNewsSpider)
     crawler.start()
     crawler.join()
+
 
 if __name__ == '__main__':
     main()
