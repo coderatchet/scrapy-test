@@ -11,15 +11,12 @@
     http://www.apache.org/licenses/LICENSE-2.0
 """
 
-from pymongo import MongoClient
+from mongoengine import connect
 from pymongo.errors import BulkWriteError
 
+from scrapytest.types import Article
 from .config import config
-
-# would use constants here but short for time.
-client = MongoClient(config['mongo_connection_string'])
-db = client[config['db_name']]
-articles = db.articles
+connection = connect(config['db_name'], host=config['mongo_connection_string'])
 
 # load test data if applicable
 if config.get('load_test_data', False):
@@ -31,8 +28,13 @@ if config.get('load_test_data', False):
 
         data = json.loads(file.read())
         try:
-            if 'articles' in db.collection_names():
-                db.drop_collection('articles')
-            articles.insert_many(data)
+            Article.drop_collection()
         except BulkWriteError as e:
             print(e.details)
+        finally:
+            for article in data:
+                new_article = Article(title=article['title'],
+                        author=article['author'],
+                        content=article.get('content', None))
+                new_article.save()
+

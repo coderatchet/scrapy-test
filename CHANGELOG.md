@@ -8,3 +8,5 @@
 
 - Feature: Added ability to read config from json file.
 - Feature: Added ability to add environment specific configuration.
+- Fix: Cleaned test data
+- Fix: Changed db orm to use mongoengine

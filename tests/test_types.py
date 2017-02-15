@@ -14,4 +14,7 @@ from scrapytest.types import Article
 
 
 def test_article_can_create():
-    assert Article(1, "introductions", "hello, world", "bob-jones")
+    assert Article(id=1,
+                   title="introductions",
+                   content="hello, world",
+                   author="bob-jones")

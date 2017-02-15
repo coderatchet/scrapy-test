@@ -1,9 +1,8 @@
-class Article:
-    """ Object for storing news article data. """
+from mongoengine import Document, StringField
 
-    def __init__(self, id, title, content, author=None):
-        super().__init__()
-        self._id = id
-        self._title = title
-        self._content = content
-        self._author = author
+
+class Article(Document):
+    """ Document Object for storing news article data. """
+    title = StringField(required=True)
+    content = StringField(required=True)
+    author = StringField(required=False)

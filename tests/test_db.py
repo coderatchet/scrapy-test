@@ -11,8 +11,10 @@
     http://www.apache.org/licenses/LICENSE-2.0
 """
 import psutil
+
 from scrapytest.config import config
-from scrapytest.db import client, db
+from scrapytest.db import connection
+from scrapytest.types import Article
 
 
 def test_mongodb_is_up():
@@ -22,10 +24,10 @@ def test_mongodb_is_up():
 
 
 def test_database_exists():
-    assert config['db_name'] in client.database_names()
+    assert config['db_name'] in connection.database_names()
 
 
 def test_test_data_exists():
-    assert 'articles' in db.collection_names()
-    assert db.articles.count() > 0
-
+    db = connection.get_database(config['db_name'])
+    assert Article.__name__.lower() in db.collection_names()
+    assert db[Article.__name__.lower()].count() > 0
