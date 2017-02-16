@@ -12,7 +12,7 @@
 """
 
 __version_info__ = ("0",  # Major
-                    "2",  # Minor
-                    "0")  # Patch
+                    "3",  # Minor
+                    "1")  # Patch
 
 __version__ = '.'.join(__version_info__)

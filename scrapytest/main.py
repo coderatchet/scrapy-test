@@ -14,7 +14,7 @@
 from scrapy.crawler import CrawlerProcess
 
 
-def main():
+def crawl():
     from scrapy.settings import Settings
     from scrapytest.spiders import GuardianNewsSpider
 
@@ -29,5 +29,13 @@ def main():
     crawler.join()
 
 
+def main():
+    import argparse
+    parser = argparse.ArgumentParser()
+    args = parser.parse_args()  # type: dict
+    if '-h' not in args and '--help' not in args:
+        crawl()
+
 if __name__ == '__main__':
     main()
+    crawl()

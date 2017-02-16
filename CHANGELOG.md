@@ -14,5 +14,6 @@
 - Fix: Cleaned test data
 - Fix: Changed db orm to use mongoengine
 
-## 0.2.1
+## 0.3.1
+- Feature: Added rudimentary cmd line `scrapytest.sh`. Call `./scrapytest.sh -h` for more info.
 - Fix: removed beautifulsoup4 (not being used, so only patch)
