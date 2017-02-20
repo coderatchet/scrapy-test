@@ -20,15 +20,19 @@ root_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir)
 config_file_path = os.path.join(root_dir, 'config.json')
 
 # load the default configuration
-with open(config_file_path) as file:
-    default_config_data = file.read()
-    config = ImmutableMergingDictionary(json.loads(default_config_data))
+try:
+    with open(config_file_path) as file:
+        default_config_data = file.read()
+        config = ImmutableMergingDictionary(json.loads(default_config_data))
 
-    # load the custom environment configuration over the original
-    env = os.getenv('ENV', None)
-    env_config_file = os.path.join(root_dir, 'config.' + str(env) + '.json')
-    if env and os.path.exists(env_config_file):
-        with open(env_config_file) as env_file:
-            env_config_data = env_file.read()
-            env_config = json.loads(env_config_data)
-            config = ImmutableMergingDictionary(env_config, config)
+        # load the custom environment configuration over the original
+        env = os.getenv('ENV', None)
+        env_config_file = os.path.join(root_dir, 'config.' + str(env) + '.json')
+        if env and os.path.exists(env_config_file):
+            with open(env_config_file) as env_file:
+                env_config_data = env_file.read()
+                env_config = json.loads(env_config_data)
+                config = {**config, **env_config}
+except e:
+    logging.log(loggin.CRITICAL, "could not load configuration!!!")
+    exit(1)

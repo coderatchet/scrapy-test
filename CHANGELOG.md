@@ -17,3 +17,5 @@
 ## 0.3.1
 - Feature: Added rudimentary cmd line `scrapytest.sh`. Call `./scrapytest.sh -h` for more info.
 - Fix: removed beautifulsoup4 (not being used, so only patch)
+- Fix: config now correctly merges environment json into main config
+- Fix: improved author tag parsing in guardian articles

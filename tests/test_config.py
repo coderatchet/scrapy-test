@@ -15,3 +15,10 @@
 def test_can_read_config_file():
     from scrapytest.config import config
     assert config['mongo_connection_string'] is not None
+
+
+def test_config_merges_properly():
+    from scrapytest.config import config
+    assert config['db_name'] == 'test'
+    assert config['test_data_file'] == 'tests/test_data.json'
+    assert 'crawler_user_agent' in config
