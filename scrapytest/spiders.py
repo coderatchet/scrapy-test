@@ -1,4 +1,5 @@
 import logging
+import re
 from datetime import datetime
 
 import scrapy
@@ -16,13 +17,13 @@ class GuardianNewsSpider(scrapy.spiders.CrawlSpider):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self._config = config['guardian_spider']
+        if self.settings and 'guardian_config' in self.settings:
+            self._config = self.settings['']
 
     def start_requests(self):
         """
         generator for requesting the content from each of the main news collection entry points
         """
-        logging.basicConfig()
-        logging.log(logging.INFO, "here")
         urls = ['http://' + self._config['host'] + path for path in self._config['collection_paths']]
         for url in urls:
             max_depth = self._config['max_depth']
@@ -91,6 +92,15 @@ class GuardianNewsSpider(scrapy.spiders.CrawlSpider):
         if existing_article is not None:
             new_article = Article(**data)
             new_article.save()
+
+    def _parse_author_tag(self, author_tag: Response):
+        """
+        parse the author section for the name
+        :param author_tag: the author/div tag to parse
+        :return: the name of the author
+        """
+        text = author_tag.css('.story-header__author-name::text').extract_first()
+        return re.split(r"-", text)[0].strip()
 
     def _article_links(self, news_list_response: Response):
         """
