@@ -161,3 +161,23 @@ class ImmutableMergingDictionary(MergingProxyDictionary):
     def clear(self):
         """ :raises AccessError: when attempting to call this function. """
         raise Exception(self.__class__)
+
+
+def merge_dict(source, destination):
+    """
+    merges dictionaries with priority given to the key values of destination
+
+    >>> a = { 'first' : { 'all_rows' : { 'pass' : 'dog', 'number' : '1' } } }
+    >>> b = { 'first' : { 'all_rows' : { 'fail' : 'cat', 'number' : '5' } } }
+    >>> merge_dict(b, a) == { 'first' : { 'all_rows' : { 'pass' : 'dog', 'fail' : 'cat', 'number' : '5' } } }
+    True
+    """
+    for key, value in source.items():
+        if isinstance(value, dict):
+            # get node or create one
+            node = destination.setdefault(key, {})
+            merge_dict(value, node)
+        else:
+            destination[key] = value
+
+    return destination

@@ -11,14 +11,19 @@
     http://www.apache.org/licenses/LICENSE-2.0
 """
 
-import pytest
 from copy import copy
 
-from scrapytest.utils import MergingProxyDictionary, ImmutableMergingDictionary, find_first
+from scrapytest.utils import MergingProxyDictionary, ImmutableMergingDictionary, find_first, merge_dict
 
 
 def test_find_first_returns_none_on_condition_not_found():
     assert find_first({'foo': 'bar', 'baz': 'spam'}, lambda x, y: False) is None
+
+
+def test_merge_dict_sees_correct_values():
+    a = {'first': {'all_rows': {'pass': 'dog', 'number': '1'}}}
+    b = {'first': {'all_rows': {'fail': 'cat', 'number': '5'}}}
+    assert merge_dict(b, a) == {'first': {'all_rows': {'pass': 'dog', 'fail': 'cat', 'number': '5'}}}
 
 
 def test_merging_dictionary_can_exist():
