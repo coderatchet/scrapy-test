@@ -1,3 +1,5 @@
+( _using semver_ )
+
 ## 0.1.1
 - Feature: Added Merging proxy dictionary
 - Patch: removed unecessary shebangs at start of files
@@ -13,8 +15,9 @@
 - Fix: Changed db orm to use mongoengine
 
 ## 0.3.1
-- Feature: Added rudimentary cmd line `scrapytest.sh`. Call `./scrapytest.sh -h` for more info.
+- Feature: Added rudimentary shellscript `run`. Call `./run -h` for more info.
 - Util: Added merge_dict function to utils. useful for loading merged config json.
 - Fix: removed beautifulsoup4 (not being used, so only patch)
 - Fix: config now correctly merges environment json into main config
 - Fix: improved author tag parsing in guardian articles
+- Docs: Improved README.md
