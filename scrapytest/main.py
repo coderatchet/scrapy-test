@@ -19,6 +19,8 @@ from scrapy.crawler import CrawlerProcess
 
 from scrapytest.config import config
 
+log = logging.getLogger(__name__)
+
 
 class Runner:
     """
@@ -67,6 +69,7 @@ class Runner:
 
         settings = Settings()
         settings.set("USER_AGENT", config['crawler_user_agent'])
+        settings.set("LOG_LEVEL", self._args['log_level'])
         settings.set('custom_guardian_config', self._custom_guardian_config)
 
         crawler = CrawlerProcess(settings=settings)
@@ -77,29 +80,20 @@ class Runner:
     def _process_arguments(self):
         """ process and save the effects of command line arguments """
         # log level
-        if 'log_level' in self._args:
-            try:
-                # convert the string to the mapped int
-                uppercase_log_level = str.upper(self._args['log_level'])
-                # noinspection PyProtectedMember
-                logging.getLogger().setLevel(logging._nameToLevel[uppercase_log_level])
-            except KeyError as key_error:
-                logging.log(logging.CRITICAL,
-                            "could not determine logging level from string: {}\n{}".format(self._args['log_level'],
-                                                                                           str(key_error)))
-                exit(1)
+        logging.basicConfig(filename=self._args['log_file'], level=self._args['log_level'])
+        self._custom_guardian_config['LOG_LEVEL'] = self._args['log_level']
         if 'max_depth' in self._args:
             self._custom_guardian_config.update({'max_depth': self._args['max_depth']})
-        pass
 
     def _configure_parser(self):
         """ Add the command line options to the argument parser """
         # All parsers have logging
         self._log_parser = ArgumentParser(add_help=False)
         self._log_parser.add_argument('-l', '--log-level', help="set level of log output", dest='log_level',
-                                      action='store',
-                                      type=str, default='INFO',
+                                      action='store', type=str.upper, default='INFO',
                                       choices=['CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG'])
+        self._log_parser.add_argument('-lf', '--log-file', help="set the file for storing log data", dest='log_file',
+                                      action='store', type=str, default='./scrapytest.log')
 
         self._subparsers = self._parser.add_subparsers()
 
@@ -137,4 +131,4 @@ if __name__ == '__main__':
     try:
         runner.run()
     except Exception as e:
-        logging.log(logging.ERROR, str(e))
+        log.error(e)
