@@ -1,4 +1,6 @@
 {
-  "db_name": "test",
-  "load_test_data": true
+  "load_test_data": true,
+  "guardian_spider": {
+    "max_depth": 1
+  }
 }
