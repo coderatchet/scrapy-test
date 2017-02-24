@@ -10,6 +10,7 @@
 
     http://www.apache.org/licenses/LICENSE-2.0
 """
+import mongoengine
 from mongoengine import connect
 from pymongo.errors import BulkWriteError
 
@@ -35,8 +36,9 @@ if config.get('load_test_data', False):
 
     "connect to the test database"
     test_db_connection_string = construct_connection_string("test_db")
-    test_connection = connect(host=test_db_connection_string, db=config["test_db"]["db_name"], alias="test_db")
+    mongoengine.connection.register_connection(host=test_db_connection_string, alias="test_db")
     root_dir = os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir))
+
     with open(os.path.join(root_dir, config['test_data_file'])) as file:
         import json
 
