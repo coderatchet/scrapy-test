@@ -10,18 +10,32 @@
 
     http://www.apache.org/licenses/LICENSE-2.0
 """
-
 from mongoengine import connect
 from pymongo.errors import BulkWriteError
 
-from .types import Article
 from .config import config
-connection = connect(host="{}/{}".format(config['mongo_connection_string'], config['db_name']))
+from .types import Article
+
+
+def construct_connection_string(db: str):
+    return "mongodb://{host}:{port}/{db_name}".format_map({**{
+        # These default parameters are overridden by the config.json contents of key "db"
+        "host": "localhost",
+        "port": "27017",
+        "db_name": "test"
+    }, **config[db]})
+
+
+db_connection_string = construct_connection_string("db")
+connect(host=db_connection_string, alias="default")
 
 # load test data if applicable
 if config.get('load_test_data', False):
     import os
 
+    "connect to the test database"
+    test_db_connection_string = construct_connection_string("test_db")
+    test_connection = connect(host=test_db_connection_string, db=config["test_db"]["db_name"], alias="test_db")
     root_dir = os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir))
     with open(os.path.join(root_dir, config['test_data_file'])) as file:
         import json
@@ -35,7 +49,6 @@ if config.get('load_test_data', False):
             # iterate through articles and persist them.
             for article in data:
                 new_article = Article(title=article['title'],
-                        author=article['author'],
-                        content=article.get('content', None))
+                                      author=article['author'],
+                                      content=article.get('content', None)).switch_db(db_alias="test_db")
                 new_article.save()
-
