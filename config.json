@@ -1,12 +1,27 @@
 {
-  "mongo_connection_string": "mongodb://localhost:27017",
-  "db_name": "scrapytest",
+  "db": {
+    "db_name": "scrapytest",
+    "host": "localhost",
+    "port": "27017"
+  },
+  "test_db": {
+    "db_name": "scrapytesttest",
+    "host": "localhost",
+    "port": "27017"
+  },
   "load_test_data": false,
   "test_data_file": "tests/test_data.json",
   "crawler_user_agent": "Jared Nagle (+http://github.com/coderatchet)",
   "guardian_spider": {
     "host": "theguardian.com.au",
-    "collection_paths": ["/news", "/sport", "/opinion", "/community", "/life-style", "/entertainment"],
+    "collection_paths": [
+      "news",
+      "sport",
+      "opinion",
+      "community",
+      "life-style",
+      "entertainment"
+    ],
     "article_list_item_link_selector": ".article-listings-default article header a::attr(href)",
     "next_page_selector": ".pager .next a::attr(href)",
     "title_selector": ".news-article-panel .news-article-title *[itemprop=name]::text",
@@ -14,6 +29,6 @@
     "date_time_selector": ".news-article-panel .news-article-byline time::attr(datetime)",
     "date_time_format": "%Y-%m-%dT%H:%M:%S%z",
     "content_selector": ".news-article-body > p:not(.summary)::text",
-    "max_depth": 1
+    "max_depth": 10
   }
 }
