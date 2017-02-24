@@ -38,7 +38,7 @@ try:
             with open(env_config_file) as env_file:
                 env_config_data = env_file.read()
                 env_config = json.loads(env_config_data)
-                config = merge_dict(config, env_config)
+                config = merge_dict(env_config, config)
 except Exception as e:
     logging.log(logging.CRITICAL, "could not load configuration!!!\n{}".format(e))
     exit(1)
