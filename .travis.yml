@@ -4,6 +4,8 @@ python:
   - "3.5-dev"
   - "nightly"
 services: mongodb
+before_install:
+  - "mongo --eval 'db.runCommand({setParameter: 1, textSearchEnabled: true})' admin"
 env:
   - ENV=dev
 install:
