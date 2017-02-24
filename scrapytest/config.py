@@ -2,6 +2,10 @@
 """
     config.py
 
+    loads the configuratio based off environment settings and saves it in a variable named ``config``
+
+    exits program if configuration load failed.
+
     Copyright 2017 CodeRatchet
 
     Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +18,9 @@
 import json
 import os
 
-from scrapytest.utils import ImmutableMergingDictionary
+import logging
+
+from scrapytest.utils import merge_dict
 
 root_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir)
 config_file_path = os.path.join(root_dir, 'config.json')
@@ -23,7 +29,7 @@ config_file_path = os.path.join(root_dir, 'config.json')
 try:
     with open(config_file_path) as file:
         default_config_data = file.read()
-        config = ImmutableMergingDictionary(json.loads(default_config_data))
+        config = json.loads(default_config_data)
 
         # load the custom environment configuration over the original
         env = os.getenv('ENV', None)
@@ -32,7 +38,7 @@ try:
             with open(env_config_file) as env_file:
                 env_config_data = env_file.read()
                 env_config = json.loads(env_config_data)
-                config = {**config, **env_config}
-except e:
-    logging.log(loggin.CRITICAL, "could not load configuration!!!")
+                config = merge_dict(config, env_config)
+except Exception as e:
+    logging.log(logging.CRITICAL, "could not load configuration!!!\n{}".format(e))
     exit(1)
