@@ -14,7 +14,7 @@ Sample web application for scraping data from news articles on theguardian.com.a
 
         ./run crawl [OPTIONS]
         
-    Crawl theguardian.com.au and extract the news articles from the list of articles 
+    Crawl theguardian.com.au and extract the news articles from the list of articles  
         
 - ### Search
 
