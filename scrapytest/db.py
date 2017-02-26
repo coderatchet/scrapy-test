@@ -44,7 +44,7 @@ if config.get('load_test_data', False):
 
         data = json.loads(file.read())
         try:
-            Article.drop_collection()
+            Article.switch_db(db_alias='test_db').drop_collection()
         except BulkWriteError as e:
             print(e.details)
         finally:
