@@ -12,7 +12,6 @@
 
     http://www.apache.org/licenses/LICENSE-2.0
 """
-from mongoengine import Q
 from mongoengine.connection import get_db
 
 from scrapytest.types import Article
@@ -28,13 +27,5 @@ class ArticleSearcher:
         """ searches the database using the given user arguments """
         # noinspection PyUnresolvedReferences
         print(get_db())
-        query_set = Article.objects(self.construct_query())
+        query_set = Article.objects.search_text(" ".join(self._args['query'])).order_by('$text_score')
         return query_set
-
-    def construct_query(self):
-        """
-        combines all terms found on the expression into a single query
-        :return Q: the full query to be passed to the objects method of the Article
-        """
-        search_expression = self._args['query']
-        return Q(content__icontains=search_expression[0]) | Q(title__icontains=search_expression[0])
