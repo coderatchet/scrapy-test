@@ -104,16 +104,18 @@ class GuardianNewsSpider(scrapy.spiders.CrawlSpider):
             'content': '\n'.join(article.css(self._config['content_selector']).extract()).strip()
         }
 
-        # persist it if it doesn't exist yet
-        log.debug("Searching for existing article with the title '{}' and date_time '{}'".format(title, date_time))
-        existing_article = Article.objects(title__exact=title, date_time__exact=date_time).first()
+        # don't save the article if nothing exists in it.
+        if not data['content'].strip() == '':
+            # persist it if it doesn't exist yet
+            log.debug("Searching for existing article with the title '{}' and date_time '{}'".format(title, date_time))
+            existing_article = Article.objects(title__exact=title, date_time__exact=date_time).first()
 
-        if existing_article is None:
-            log.debug("Article not found for {} - {}, saving new article: {}".format(title, date_time, data))
-            new_article = Article(**data)
-            new_article.save()
-        else:
-            log.debug("Article found, not saving")
+            if existing_article is None:
+                log.debug("Article not found for {} - {}, saving new article: {}".format(title, date_time, data))
+                new_article = Article(**data)
+                new_article.save()
+            else:
+                log.debug("Article found, not saving")
 
     @staticmethod
     def _parse_author_tag(author_tag: Response):

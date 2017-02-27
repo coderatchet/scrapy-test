@@ -136,7 +136,7 @@ class Runner:
         self._search_parser.set_defaults(func=self.search)
 
         # TODO: Implement functionality
-        self._search_parser.add_argument('query', help="search query for finding an article", nargs=1,
+        self._search_parser.add_argument('query', help="search query for finding an article", nargs='+',
                                          action='store', type=str, metavar="QUERY")
 
         # TODO: add case sensitive search
