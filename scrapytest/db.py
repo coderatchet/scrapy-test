@@ -12,6 +12,7 @@
 """
 import mongoengine
 from mongoengine import connect
+from pymongo.database import Database
 from pymongo.errors import BulkWriteError
 
 from .config import config
@@ -44,7 +45,9 @@ if config.get('load_test_data', False):
 
         data = json.loads(file.read())
         try:
-            Article.switch_db(db_alias='test_db').drop_collection()
+            db = mongoengine.connection.get_db('test_db')  # type: Database
+            db.drop_collection(Article.__class__.__name__.lower())
+
         except BulkWriteError as e:
             print(e.details)
         finally:
@@ -52,5 +55,5 @@ if config.get('load_test_data', False):
             for article in data:
                 new_article = Article(title=article['title'],
                                       author=article['author'],
-                                      content=article.get('content', None)).switch_db(db_alias="test_db")
+                                      content=article.get('content', None)).switch_db(db_alias='test_db')
                 new_article.save()
