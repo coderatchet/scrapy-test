@@ -18,6 +18,8 @@ from argparse import ArgumentParser
 from scrapy.crawler import CrawlerProcess
 
 from scrapytest.config import config
+from scrapytest.search import ArticleSearcher
+from scrapytest.types import Article
 
 log = logging.getLogger(__name__)
 
@@ -58,8 +60,39 @@ class Runner:
 
     def search(self):
         """ search the database for the terms defined in the argument to --search/-s """
-        # TODO: Implement
-        pass
+        # initialize the database
+        # noinspection PyUnresolvedReferences
+        import scrapytest.db
+
+        log.debug("searching for articles with: '{}'".format(self._args['query']))
+        searcher = ArticleSearcher(self._args)
+        results = searcher.run()  # type: list[Article]
+
+        result_arr = []
+        index = 0
+
+        print("Displaying results from highest rank to lowest:\n")
+        for result in results:
+            index += 1
+            print("{:2d}) {}".format(index, result.title))
+            result_arr.append(result)
+
+        # Ask the user for a selection
+        if index > 0:
+            while True:
+                try:
+                    number = int(input("please choose a number between 1 and {}: ".format(index)))
+                    if number < 1 or number > index:
+                        raise ValueError
+                    else:
+                        # Leave some room for viewing clarity then print the article.
+                        print("\n")
+                        print_article(result_arr[index - 1])
+                        break
+                except ValueError:
+                    print("invalid choice!")
+        else:
+            print("search yielded no results")
 
     def crawl(self):
         """ crawl through the database and either save the results to a database or text files. """
@@ -103,9 +136,10 @@ class Runner:
         self._search_parser.set_defaults(func=self.search)
 
         # TODO: Implement functionality
-        self._search_parser.add_argument('expression', help="search query for finding an article", nargs=1,
-                                         action='store')
+        self._search_parser.add_argument('query', help="search query for finding an article", nargs=1,
+                                         action='store', type=str, metavar="QUERY")
 
+        # TODO: add case sensitive search
         # setup crawl api
         self._crawl_parser = self._subparsers.add_parser('crawl',
                                                          help='Crawl through \"theguardian.com.au\" and optionally '
@@ -123,6 +157,14 @@ class Runner:
         # TODO: Implement functionality
         self._crawl_parser.add_argument('-p', '--print-json', help="print results in json format", action='store_true',
                                         dest='print_json')
+
+
+def print_article(article: Article):
+    title__format = "Title: {}".format(article.title)
+    print(title__format)
+    print(("=" * len(title__format)) + "\n")
+    print("by: {}, on: {}\n\n".format(article.author, article.date_time))
+    print(article.content)
 
 
 if __name__ == '__main__':

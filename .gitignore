@@ -92,5 +92,4 @@ ENV/
 
 # should ignore local configuration files for security of personal data
 *.local.json
-scrapytest/search.py
 src/
