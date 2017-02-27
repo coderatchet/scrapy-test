@@ -77,17 +77,17 @@ class Runner:
             print("{:2d}) {}".format(index, result.title))
             result_arr.append(result)
 
-        # Ask the user for a selection
+        # Ask the user for a selection until a valid input is given.
         if index > 0:
             while True:
                 try:
-                    number = int(input("please choose a number between 1 and {}: ".format(index)))
+                    number = int(input("\nplease choose a number between 1 and {}: ".format(index)))
                     if number < 1 or number > index:
                         raise ValueError
                     else:
                         # Leave some room for viewing clarity then print the article.
                         print("\n")
-                        print_article(result_arr[index - 1])
+                        print_article(result_arr[number - 1])
                         break
                 except ValueError:
                     print("invalid choice!")
